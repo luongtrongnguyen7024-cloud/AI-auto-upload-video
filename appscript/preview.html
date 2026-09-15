@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>PTAT Studio — Trung Tâm Điều Hành Video & Bài Viết</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-base: #090D16;
+    --bg-surface: #0F172A;
+    --bg-card: #141E33;
+    --bg-card-hover: #1E2D4A;
+    --bg-input: #0B1220;
+    
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --border-focus: #10B981;
+
+    --emerald-400: #34D399;
+    --emerald-500: #10B981;
+    --emerald-600: #059669;
+    --emerald-glow: rgba(16, 185, 129, 0.2);
+
+    --amber-400: #FBBF24;
+    --amber-500: #F59E0B;
+    --amber-glow: rgba(245, 158, 11, 0.2);
+
+    --rose-500: #EF4444;
+    --rose-glow: rgba(239, 68, 68, 0.2);
+
+    --blue-500: #3B82F6;
+    --indigo-500: #6366F1;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 25px -5px var(--emerald-glow);
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+  }
+
+  .sidebar-brand {
+    padding: 24px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--emerald-500), #064E3B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-glow);
+    font-size: 20px;
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, #FFFFFF, #94A3B8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .brand-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--emerald-400);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border);
+  }
+
+  .nav-item.active {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--emerald-400);
+    border-color: rgba(16, 185, 129, 0.3);
+    font-weight: 600;
+  }
+
+  .nav-badge {
+    margin-left: auto;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--amber-400);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 99px;
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* MAIN CONTENT */
+  .main-wrapper {
+    margin-left: 260px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .top-header {
+    height: 70px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .header-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .status-dot.active {
+    background: var(--emerald-500);
+    box-shadow: 0 0 8px var(--emerald-500);
+  }
+
+  .status-dot.warning {
+    background: var(--amber-500);
+    box-shadow: 0 0 8px var(--amber-500);
+  }
+
+  .status-dot.danger {
+    background: var(--rose-500);
+    box-shadow: 0 0 8px var(--rose-500);
+  }
+
+  /* CONTENT AREA */
+  .content-body {
+    padding: 32px;
+    flex: 1;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .tab-pane {
+    display: none;
+    animation: fadeIn 0.25s ease-out forwards;
+  }
+
+  .tab-pane.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+    color: #FFFFFF;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+  }
+
+  .btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--rose-500);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-danger:hover {
+    background: var(--rose-500);
+    color: #FFFFFF;
+  }
+
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: var(--radius-sm);
+  }
+
+  /* CARDS & GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+  }
+
+  .stat-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .stat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .stat-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  /* ALERT BOX */
+  .alert-box {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .alert-box.danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .alert-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.92rem;
+  }
+
+  .alert-icon {
+    font-size: 22px;
+  }
+
+  /* SECTION CARDS */
+  .panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .panel-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .filter-btn:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+  }
+
+  .filter-btn.active {
+    background: var(--emerald-500);
+    color: #FFFFFF;
+    border-color: var(--emerald-500);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .search-input {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+    outline: none;
+    transition: var(--transition);
+    min-width: 240px;
+  }
+
+  .search-input:focus {
+    border-color: var(--emerald-500);
+    box-shadow: 0 0 0 2px var(--emerald-glow);
+  }
+
+  /* TABLE */
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+  }
+
+  .data-table th {
+    padding: 12px 16px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+
+  .data-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* BADGES */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-emerald {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--emerald-400);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .badge-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--amber-400);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .badge-rose {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--rose-500);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .badge-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60A5FA;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .badge-slate {
+    background: rgba(100, 116, 139, 0.15);
+    color: var(--text-secondary);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+  }
+
+  /* UPLOAD DROPZONE */
+  .upload-box {
+    border: 2px dashed var(--border-hover);
+    border-radius: var(--radius-xl);
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.5);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .upload-box:hover, .upload-box.drag-over {
+    border-color: var(--emerald-500);
+    background: rgba(16, 185, 129, 0.05);
+  }
+
+  .upload-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-xl);
+    width: 90%;
+    max-width: 650px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transform: scale(0.95);
+    transition: var(--transition);
+  }
+
+  .modal-overlay.open .modal-card {
+    transform: scale(1);
+  }
+
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* FORM INPUTS */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .form-control {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    transition: var(--transition);
+  }
+
+  .form-control:focus {
+    border-color: var(--emerald-500);
+    box-shadow: 0 0 0 2px var(--emerald-glow);
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  /* TOAST NOTIFICATION */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 200;
+  }
+
+  .toast {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.88rem;
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* SPINNER */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { width: 70px; }
+    .sidebar-brand span, .nav-item span, .brand-badge, .sidebar-footer { display: none; }
+    .main-wrapper { margin-left: 70px; }
+    .top-header { padding: 0 16px; }
+    .content-body { padding: 20px 16px; }
+  }
+</style>
+
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">🌿</div>
+      <div>
+        <div class="brand-title">PTAT Studio</div>
+        <span class="brand-badge">Auto Publisher v1</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-tab="overview">
+        <span>📊</span>
+        <span>Tổng quan</span>
+      </div>
+      <div class="nav-item" data-tab="queue">
+        <span>🎬</span>
+        <span>Hàng đợi Reels</span>
+        <span class="nav-badge" id="badge-queue-count">0</span>
+      </div>
+      <div class="nav-item" data-tab="approval">
+        <span>✅</span>
+        <span>Cổng Duyệt</span>
+        <span class="nav-badge" id="badge-approval-count" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24;">0</span>
+      </div>
+      <div class="nav-item" data-tab="upload">
+        <span>📤</span>
+        <span>Upload Studio</span>
+      </div>
+      <div class="nav-item" data-tab="calendar">
+        <span>📅</span>
+        <span>Lịch 3 Slot</span>
+      </div>
+      <div class="nav-item" data-tab="control">
+        <span>⚡</span>
+        <span>Trạm Điều Khiển</span>
+      </div>
+      <div class="nav-item" data-tab="logs">
+        <span>📜</span>
+        <span>Nhật ký Vận hành</span>
+      </div>
+      <div class="nav-item" data-tab="research" style="opacity: 0.6;">
+        <span>💡</span>
+        <span>Bài viết & Nguồn</span>
+        <span style="font-size: 0.65rem; background: rgba(255,255,255,0.08); padding: 2px 5px; border-radius: 4px; margin-left: auto;">Sắp tới</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div><strong>Phong Thủy An Tâm</strong></div>
+      <div>Page ID: 1321343767732072</div>
+      <div id="footer-status" style="margin-top: 4px; color: var(--emerald-400);">● Hệ thống an toàn</div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="main-wrapper">
+    <!-- TOP STICKY HEADER -->
+    <header class="top-header">
+      <div class="header-info">
+        <h1 class="page-title" id="page-current-title">Tổng quan hệ thống</h1>
+        <div class="status-pill" id="header-slot-pill">
+          <span class="status-dot active"></span>
+          <span id="header-slot-text">Slot: Đang nạp...</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-pill" id="header-daily-pill" title="Giới hạn tối đa 3 Reel mỗi ngày">
+          <span>Hạn mức ngày:</span>
+          <strong id="header-daily-count" style="color: var(--emerald-400);">0 / 3</strong>
+        </div>
+
+        <button class="btn btn-secondary btn-sm" id="btn-sync-quick" title="Quét thư mục Google Drive ngay lập tức">
+          <span>🔄</span> Quét Drive
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="content-body">
+
+      <!-- TAB 1: OVERVIEW -->
+      <section class="tab-pane active" id="tab-overview">
+        <!-- RECOVERY LOCK ALERT (ẨN NẾU KHÔNG CÓ KHÓA) -->
+        <div class="alert-box danger" id="alert-recovery-lock" style="display: none;">
+          <div class="alert-content">
+            <span class="alert-icon">⚠️</span>
+            <div>
+              <strong>Đang có khóa chống đăng trùng (Recovery Lock) trên hệ thống!</strong>
+              <div id="alert-recovery-desc" style="font-size: 0.85rem; margin-top: 2px;">Vui lòng kiểm tra Fanpage trước khi bấm gỡ khóa.</div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="showClearLockModal()">Gỡ khóa an toàn</button>
+        </div>
+
+        <!-- STATS KPI GRID -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>ĐÃ ĐĂNG HÔM NAY</span>
+              <span>📈</span>
+            </div>
+            <div class="stat-value" id="stat-published-today">0 / 3</div>
+            <div class="stat-desc">Giới hạn Meta an toàn 3 bài/ngày</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>VIDEO CHỜ DUYỆT</span>
+              <span>⏳</span>
+            </div>
+            <div class="stat-value" id="stat-pending-approval" style="color: var(--amber-400);">0</div>
+            <div class="stat-desc">Cần người vận hành phê duyệt</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>ĐÃ LÊN LỊCH HÔM NAY</span>
+              <span>📅</span>
+            </div>
+            <div class="stat-value" id="stat-scheduled-today" style="color: var(--emerald-400);">0</div>
+            <div class="stat-desc">Đủ điều kiện sẵn sàng đăng</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>CHƯA CÓ VIDEO</span>
+              <span>🎬</span>
+            </div>
+            <div class="stat-value" id="stat-pending-video" style="color: var(--text-secondary);">0</div>
+            <div class="stat-desc">Hàng đợi đang chờ upload</div>
+          </div>
+        </div>
+
+        <!-- TWO COLUMN LAYOUT: NEXT TASKS + TODAY SLOTS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 28px;">
+          <!-- CARD: VIỆC CẦN LÀM TIẾP THEO -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>🎯</span> Việc cần làm tiếp theo
+              </div>
+            </div>
+            <div id="overview-tasks-list" style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="color: var(--text-muted); font-size: 0.9rem;">Đang tải dữ liệu nhiệm vụ...</div>
+            </div>
+          </div>
+
+          <!-- CARD: 3 KHUNG GIỜ HÔM NAY -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>⏰</span> Lịch 3 Slot hôm nay
+              </div>
+              <span class="badge badge-emerald" id="today-date-badge">Hôm nay</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;" id="overview-slots-container">
+              <!-- Sáng -->
+              <div style="background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">🌅 Slot Sáng (08:00)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);" id="slot-sang-detail">Đang kiểm tra...</div>
+                </div>
+                <div id="slot-sang-badge"><span class="badge badge-slate">Trống</span></div>
+              </div>
+
+              <!-- Trưa -->
+              <div style="background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">☀️ Slot Trưa (12:00)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);" id="slot-trua-detail">Đang kiểm tra...</div>
+                </div>
+                <div id="slot-trua-badge"><span class="badge badge-slate">Trống</span></div>
+              </div>
+
+              <!-- Tối -->
+              <div style="background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">🌙 Slot Tối (20:00)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);" id="slot-toi-detail">Đang kiểm tra...</div>
+                </div>
+                <div id="slot-toi-badge"><span class="badge badge-slate">Trống</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: REELS QUEUE -->
+      <section class="tab-pane" id="tab-queue">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>🎬</span> Danh sách Hàng đợi Reels
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadQueueTable()">
+              <span>🔄</span> Làm mới
+            </button>
+          </div>
+
+          <!-- FILTER BAR -->
+          <div class="filter-bar">
+            <div class="filter-group" id="queue-filter-buttons">
+              <button class="filter-btn active" data-filter="ALL">Tất cả</button>
+              <button class="filter-btn" data-filter="NEED_APPROVAL">Chờ duyệt</button>
+              <button class="filter-btn" data-filter="APPROVED">Đã duyệt</button>
+              <button class="filter-btn" data-filter="TODAY">Hôm nay</button>
+              <button class="filter-btn" data-filter="NEED_VIDEO">Chờ video</button>
+              <button class="filter-btn" data-filter="PUBLISHED">Đã đăng</button>
+              <button class="filter-btn" data-filter="ERROR">Lỗi</button>
+            </div>
+
+            <input type="text" class="search-input" id="queue-search" placeholder="🔍 Tìm kiếm Content ID, ý tưởng, caption...">
+          </div>
+
+          <!-- DATA TABLE -->
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Content ID</th>
+                  <th>Ý tưởng / Chủ đề</th>
+                  <th>Ngày & Slot</th>
+                  <th>Trạng thái Video</th>
+                  <th>Cổng Duyệt</th>
+                  <th>Trạng thái Đăng</th>
+                  <th style="text-align: right;">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="queue-table-body">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">Đang tải danh sách hàng đợi...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: APPROVAL CENTER -->
+      <section class="tab-pane" id="tab-approval">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                <span>✅</span> Cổng Kiểm Duyệt Người Thật
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Chỉ những video được bạn phê duyệt tại đây mới được phép xuất bản lên Fanpage.
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadApprovalQueue()">
+              <span>🔄</span> Quét lại
+            </button>
+          </div>
+
+          <div id="approval-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;">
+            <div style="color: var(--text-muted); padding: 30px;">Đang tìm các video đang chờ duyệt...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: UPLOAD STUDIO -->
+      <section class="tab-pane" id="tab-upload">
+        <div class="panel" style="max-width: 700px; margin: 0 auto;">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                <span>📤</span> Upload Video Studio
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Tải video MP4 dọc (< 50 MB). Hệ thống tự chuẩn hóa tên PTAT-xxx.mp4 và lưu vào Drive intake.
+              </div>
+            </div>
+          </div>
+
+          <form id="upload-form" onsubmit="handleUploadSubmit(event)" style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="form-group">
+              <label class="form-label" for="upload-content-id">Chọn Content ID cần tải video *</label>
+              <select class="form-control" id="upload-content-id" required>
+                <option value="">-- Chọn Content ID --</option>
+              </select>
+            </div>
+
+            <!-- DROPZONE -->
+            <div class="upload-box" id="dropzone" onclick="document.getElementById('video-file-input').click()">
+              <input type="file" id="video-file-input" accept="video/mp4" style="display: none;" onchange="handleFileSelected(this)">
+              <div class="upload-icon">📹</div>
+              <div style="font-weight: 600; font-size: 1rem;" id="dropzone-text">Kéo thả file MP4 vào đây hoặc bấm để chọn</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">Định dạng: MP4 (9:16) • Dung lượng tối đa: 50 MB</div>
+            </div>
+
+            <div id="upload-file-details" style="display: none; background: var(--bg-card); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+              <div style="font-size: 0.9rem; font-weight: 600;" id="upload-file-name">Tên file</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);" id="upload-file-size">Dung lượng: 0 MB</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-upload-submit" disabled>
+              <span>🚀</span> Tải lên Drive & Cập nhật Hàng đợi
+            </button>
+
+            <!-- PROGRESS INDICATOR -->
+            <div id="upload-progress-box" style="display: none; text-align: center; padding: 14px;">
+              <div class="spinner" style="margin: 0 auto 8px auto; width: 24px; height: 24px; border-width: 3px;"></div>
+              <div style="font-size: 0.88rem; color: var(--emerald-400);" id="upload-progress-text">Đang tải video lên Google Drive...</div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 5: CALENDAR / SLOTS -->
+      <section class="tab-pane" id="tab-calendar">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📅</span> Lịch Đăng 3 Slot Hằng Ngày
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Trigger: 08:00 (Sáng) • 12:00 (Trưa) • 20:00 (Tối) (±15 phút theo Google Apps Script)
+            </div>
+          </div>
+
+          <div id="calendar-days-container" style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="color: var(--text-muted); padding: 30px;">Đang tải lịch phát hành...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: CONTROL CENTER -->
+      <section class="tab-pane" id="tab-control">
+        <div class="stats-grid">
+          <!-- CARD 1: SYNC DRIVE -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title"><span>🔄</span> Quét Thư Mục Drive</div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Tự động kiểm tra folder intake `PTAT-xxx.mp4` và đồng bộ vào Sheet. Không gọi Meta, an toàn tuyệt đối.
+            </p>
+            <button class="btn btn-primary btn-sm" id="btn-control-sync" onclick="triggerManualSync()">
+              <span>🔄</span> Quét Drive Ngay
+            </button>
+          </div>
+
+          <!-- CARD 2: RECOVERY LOCK -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title"><span>🛡️</span> Khóa Chống Trùng (Recovery Lock)</div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 12px;">
+              Khóa này tự động giữ nếu quá trình publish bị gián đoạn, ngăn ngừa nguy cơ đăng lặp video.
+            </p>
+            <div id="control-lock-status" style="margin-bottom: 16px;">
+              <span class="badge badge-emerald">Bình thường (Không có khóa)</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="showClearLockModal()">
+              <span>🔓</span> Gỡ Khóa Có Kiểm Soát
+            </button>
+          </div>
+
+          <!-- CARD 3: TRIGGER EMERGENCY -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title"><span>⚠️</span> Dừng Khẩn Cấp Lịch Đăng</div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Tạm thời xóa 3 trigger đăng Reels hằng ngày (08h, 12h, 20h). Giữ nguyên trigger quét Drive.
+            </p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-danger btn-sm" onclick="triggerEmergencyStop()">
+                <span>🛑</span> Dừng Lịch Đăng
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="triggerResetSchedule()">
+                <span>⚡</span> Khôi Phục 3 Trigger
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM HEALTH DETAILS -->
+        <div class="panel" style="margin-top: 24px;">
+          <div class="panel-header">
+            <div class="panel-title"><span>🩺</span> Tình Trạng Kết Nối Hệ Thống</div>
+          </div>
+          <div id="system-health-details" style="font-size: 0.9rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <div>Đang kiểm tra kết nối Script Properties...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: OPERATIONS LOG -->
+      <section class="tab-pane" id="tab-logs">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📜</span> Nhật Ký Vận Hành (Operations Log)
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadOperationsLogs()">
+              <span>🔄</span> Tải lại Log
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th>Thao tác</th>
+                  <th>Content ID</th>
+                  <th>Kết quả</th>
+                  <th>Diễn giải</th>
+                  <th>Thực hiện bởi</th>
+                </tr>
+              </thead>
+              <tbody id="logs-table-body">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">Đang tải nhật ký...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: RESEARCH & POSTS (PHASE 4 PLACEHOLDER) -->
+      <section class="tab-pane" id="tab-research">
+        <div class="panel" style="text-align: center; padding: 60px 20px; max-width: 600px; margin: 40px auto;">
+          <div style="font-size: 48px; margin-bottom: 16px;">💡</div>
+          <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 10px;">Giai Đoạn Bài Viết & Nghiên Cứu Phong Thủy</h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+            Tab này được chuẩn bị sẵn cho <strong>Phase 4 & Phase 5</strong> theo kế hoạch bàn giao:
+            Quản lý nguồn nghiên cứu (Research Inbox) và hàng chờ duyệt bài viết (Post Queue) trước khi xuất bản lên Fanpage.
+          </p>
+          <span class="badge badge-slate" style="padding: 6px 12px; font-size: 0.85rem;">Trạng thái: Chưa kích hoạt (An toàn cho Reels v1)</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: CHI TIẾT & SỬA BẢN NHÁP REEL -->
+  <div class="modal-overlay" id="modal-detail">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; font-weight: 700;" id="modal-detail-title">Chi tiết Reel</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Ý tưởng / Chủ đề</label>
+          <input type="text" class="form-control" id="modal-idea" readonly style="opacity: 0.8;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Hook mở đầu</label>
+          <input type="text" class="form-control" id="modal-hook" readonly style="opacity: 0.8;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Kịch bản chi tiết</label>
+          <textarea class="form-control" id="modal-script" readonly style="opacity: 0.8; height: 90px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Caption Facebook (Có thể chỉnh sửa tại đây) *</label>
+          <textarea class="form-control" id="modal-caption" style="height: 110px;"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Ngày đăng (yyyy-MM-dd hoặc dd/MM/yyyy)</label>
+            <input type="text" class="form-control" id="modal-date" placeholder="2026-09-15">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Slot đăng</label>
+            <select class="form-control" id="modal-slot">
+              <option value="">-- Chưa chọn --</option>
+              <option value="SÁNG">SÁNG (08:00)</option>
+              <option value="TRƯA">TRƯA (12:00)</option>
+              <option value="TỐI">TỐI (20:00)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="modal-drive-link-box" style="display: none; font-size: 0.85rem; padding: 10px; background: var(--bg-card); border-radius: var(--radius-sm);">
+          <span>🔗 Link Video Drive: </span>
+          <a href="#" target="_blank" id="modal-drive-link" style="color: var(--emerald-400);">Mở video trên Google Drive</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-detail')">Đóng</button>
+        <button class="btn btn-primary" id="btn-save-draft" onclick="handleSaveDraft()">Lưu Bản Nháp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TỪ CHỐI DUYỆT (BẮT BUỘC LÝ DO) -->
+  <div class="modal-overlay" id="modal-reject">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--rose-500);">Từ Chối Video</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-reject')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary);" id="reject-modal-prompt">
+          Nhập lý do từ chối để người tạo video nắm được và lưu vào nhật ký kiểm toán.
+        </p>
+        <input type="hidden" id="reject-content-id">
+        <div class="form-group">
+          <label class="form-label">Lý do từ chối *</label>
+          <textarea class="form-control" id="reject-reason" placeholder="Ví dụ: Video mờ, âm thanh nhỏ, sai định dạng..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-reject')">Hủy</button>
+        <button class="btn btn-danger" onclick="submitRejectReel()">Xác nhận Từ Chối</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GỠ RECOVERY LOCK AN TOÀN -->
+  <div class="modal-overlay" id="modal-clear-lock">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 700;">Gỡ Khóa Phục Hồi (Recovery Lock)</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-clear-lock')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--amber-400); border: 1px solid rgba(245, 158, 11, 0.3);">
+          ⚠️ <strong>LƯU Ý BẢO MẬT BẮT BUỘC:</strong><br>
+          Trước khi gỡ khóa, bạn phải mở Fanpage và chắc chắn rằng video chưa xuất hiện trên Fanpage để tránh đăng trùng lặp.
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label class="form-label">Lý do gỡ khóa (Ghi vào Audit Log) *</label>
+          <input type="text" class="form-control" id="clear-lock-reason" placeholder="Đã kiểm tra Fanpage, không có video PTAT-xxx..." required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-clear-lock')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitClearLock()">Xác nhận Gỡ Khóa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  
+<script>
+  // MOCK DATA CHO TRÌNH DUYỆT LOCAL XEM TRƯỚC
+  const mockQueue = [
+    { rowNumber: 2, contentId: 'PTAT-001', pillar: 'Định vị Page', idea: 'Bài chào mừng Page', hook: 'Một góc nhìn đơn giản...', caption: 'Chào mừng bạn đến với Phong Thủy An Tâm...', videoStatus: 'CHƯA CÓ', autoStatus: 'CHƯA', approvalStatus: 'CHƯA', scheduledDate: '2026-09-13', slot: 'SÁNG', driveUrl: '', postingStatus: 'ĐÃ ĐĂNG' },
+    { rowNumber: 3, contentId: 'PTAT-002', pillar: 'Không gian sống', idea: 'Dọn cửa chính đón lộc', hook: 'Cửa chính bừa bộn...', caption: 'Dọn sạch cửa chính giúp đón luồng sinh khí mới...', videoStatus: 'VIDEO_READY', autoStatus: 'ĐÃ ĐĂNG', approvalStatus: 'ĐÃ DUYỆT', scheduledDate: '2026-09-14', slot: 'SÁNG', driveUrl: 'https://drive.google.com', postingStatus: 'ĐÃ ĐĂNG' },
+    { rowNumber: 4, contentId: 'PTAT-003', pillar: 'Thói quen sống', idea: 'Góc làm việc gọn gàng', hook: 'Bàn làm việc bừa...', caption: 'Một góc làm việc thoáng đãng giúp tâm trí minh mẫn...', videoStatus: 'CHƯA CÓ', autoStatus: 'CHƯA', approvalStatus: 'CHƯA', scheduledDate: '2026-09-14', slot: 'TRƯA', driveUrl: '', postingStatus: 'CHƯA ĐĂNG' },
+    { rowNumber: 5, contentId: 'PTAT-004', pillar: 'Phong thủy ứng dụng', idea: 'Cây xanh thanh lọc năng lượng', hook: '3 loại cây dễ trồng...', caption: 'Chọn cây xanh phong thủy phù hợp không gian sống...', videoStatus: 'VIDEO_READY', autoStatus: 'ĐÃ ĐĂNG', approvalStatus: 'ĐÃ DUYỆT', scheduledDate: '2026-09-15', slot: 'SÁNG', driveUrl: 'https://drive.google.com', postingStatus: 'ĐÃ ĐĂNG' },
+    { rowNumber: 6, contentId: 'PTAT-005', pillar: 'Tâm linh tham khảo', idea: 'Bình an trong tâm', hook: 'Mỗi sáng thức dậy...', caption: 'Nuôi dưỡng sự bình tĩnh qua từng hơi thở...', videoStatus: 'VIDEO_READY', autoStatus: 'ĐÃ ĐĂNG', approvalStatus: 'ĐÃ DUYỆT', scheduledDate: '2026-09-15', slot: 'TRƯA', driveUrl: 'https://drive.google.com', postingStatus: 'ĐÃ ĐĂNG' },
+    { rowNumber: 7, contentId: 'PTAT-006', pillar: 'Không gian sống', idea: 'Ánh sáng phòng ngủ', hook: 'Đừng để đèn ngủ quá chói...', caption: 'Ánh sáng ấm áp giúp giấc ngủ sâu và tái tạo năng lượng...', videoStatus: 'VIDEO_READY', autoStatus: 'CHƯA', approvalStatus: 'CHỜ DUYỆT', scheduledDate: '2026-09-15', slot: 'TỐI', driveUrl: 'https://drive.google.com', postingStatus: 'CHƯA ĐĂNG' },
+    { rowNumber: 8, contentId: 'PTAT-007', pillar: 'Phong thủy ứng dụng', idea: 'Vị trí gương soi', hook: 'Gương đối diện giường ngủ...', caption: 'Những lưu ý khi bố trí gương trong nhà để tránh bất an...', videoStatus: 'CHƯA CÓ', autoStatus: 'CHƯA', approvalStatus: 'CHƯA', scheduledDate: '2026-09-16', slot: 'SÁNG', driveUrl: '', postingStatus: 'CHƯA ĐĂNG' }
+  ];
+
+  window.google = {
+    script: {
+      run: {
+        withSuccessHandler: function(successFn) {
+          return {
+            withFailureHandler: function(failFn) {
+              return {
+                getDashboardSnapshot: () => setTimeout(() => successFn({
+                  today: '2026-09-15',
+                  currentSlot: 'TỐI',
+                  dailyCount: 2,
+                  maxDaily: 3,
+                  hasRecoveryLock: false,
+                  recoveryLockDetail: null,
+                  triggers: { driveSyncEnabled: true, driveSyncCount: 1, publishScheduleEnabled: true, publishScheduleCount: 3 },
+                  stats: { total: 21, pendingVideo: 15, pendingApproval: 1, scheduledToday: 1, publishedCount: 3, errorCount: 0 },
+                  nextTasks: [{ type: 'NEED_APPROVAL', contentId: 'PTAT-006', text: 'PTAT-006 đã có video, đang chờ bạn duyệt' }]
+                }), 80),
+                listReels: (filter, query) => setTimeout(() => {
+                  let res = [...mockQueue];
+                  if (filter === 'NEED_APPROVAL') res = res.filter(r => r.approvalStatus === 'CHỜ DUYỆT');
+                  if (filter === 'APPROVED') res = res.filter(r => r.approvalStatus === 'ĐÃ DUYỆT');
+                  if (filter === 'PUBLISHED') res = res.filter(r => r.postingStatus === 'ĐÃ ĐĂNG');
+                  if (filter === 'NEED_VIDEO') res = res.filter(r => r.videoStatus !== 'VIDEO_READY');
+                  if (query) {
+                    res = res.filter(r => r.contentId.toLowerCase().includes(query.toLowerCase()) || r.idea.toLowerCase().includes(query.toLowerCase()));
+                  }
+                  successFn(res);
+                }, 80),
+                getReelDetail: (id) => setTimeout(() => successFn(mockQueue.find(r => r.contentId === id) || mockQueue[0]), 80),
+                approveReel: (id) => setTimeout(() => {
+                  const item = mockQueue.find(r => r.contentId === id);
+                  if (item) { item.approvalStatus = 'ĐÃ DUYỆT'; item.autoStatus = 'SẴN SÀNG ĐĂNG'; }
+                  successFn({ success: true, message: 'Đã duyệt ' + id + ' thành công!' });
+                }, 200),
+                rejectReel: (id, reason) => setTimeout(() => {
+                  const item = mockQueue.find(r => r.contentId === id);
+                  if (item) { item.approvalStatus = 'TỪ CHỐI'; }
+                  successFn({ success: true, contentId: id });
+                }, 200),
+                saveReelDraft: (data) => setTimeout(() => {
+                  const item = mockQueue.find(r => r.contentId === data.contentId);
+                  if (item) {
+                    if (data.caption) item.caption = data.caption;
+                    if (data.scheduledDate) item.scheduledDate = data.scheduledDate;
+                    if (data.slot) item.slot = data.slot;
+                  }
+                  successFn({ success: true });
+                }, 150),
+                syncDriveNow: () => setTimeout(() => successFn({ updated: 1, message: 'Đã quét xong. Nhận diện 1 video mới.' }), 400),
+                emergencyStopSchedule: () => setTimeout(() => successFn({ success: true, removedCount: 3 }), 200),
+                resetScheduleNow: () => setTimeout(() => successFn({ success: true, message: 'Đã kích hoạt lại 3 trigger.' }), 200),
+                clearLockSafe: (reason) => setTimeout(() => successFn({ success: true, message: 'Đã gỡ khóa thành công.' }), 150),
+                getSystemHealth: () => setTimeout(() => successFn({
+                  metaTokenConfigured: true,
+                  dailyReelsPublished: 2,
+                  maxDailyReels: 3,
+                  recoveryLockActive: false,
+                  triggers: { driveSyncEnabled: true, publishScheduleEnabled: true, publishScheduleCount: 3 }
+                }), 80),
+                getOperationsLog: (limit) => setTimeout(() => successFn([
+                  { timestamp: '2026-09-15 15:08:12', action: 'PUBLISH', contentId: 'PTAT-005', result: 'OK', message: 'Published PTAT-005; daily total: 1.', actor: 'System' },
+                  { timestamp: '2026-09-15 15:00:00', action: 'SYNC_DRIVE', contentId: 'PTAT-005', result: 'OK', message: 'Nhận diện PTAT-005.mp4 -> CHỜ DUYỆT', actor: 'System' },
+                  { timestamp: '2026-09-15 10:28:45', action: 'PUBLISH', contentId: 'PTAT-004', result: 'OK', message: 'Published PTAT-004; daily total: 1.', actor: 'Operator' }
+                ]), 80),
+                uploadReelVideoFromForm: (form) => setTimeout(() => {
+                  mockQueue.push({
+                    rowNumber: mockQueue.length + 2,
+                    contentId: form.contentId,
+                    pillar: 'Phong thủy',
+                    idea: 'Video vừa tải lên',
+                    hook: 'Hook mới',
+                    caption: 'Caption tự động',
+                    videoStatus: 'VIDEO_READY',
+                    autoStatus: 'CHƯA',
+                    approvalStatus: 'CHỜ DUYỆT',
+                    scheduledDate: '2026-09-15',
+                    slot: 'TỐI',
+                    driveUrl: 'https://drive.google.com',
+                    postingStatus: 'CHƯA ĐĂNG'
+                  });
+                  successFn({ success: true, contentId: form.contentId, driveUrl: 'https://drive.google.com', fileName: form.contentId + '.mp4' });
+                }, 600)
+              };
+            }
+          };
+        }
+      }
+    }
+  };
+</script>
+<script>
+  // PTAT Studio — Dashboard Client Logic
+
+  const state = {
+    currentTab: 'overview',
+    snapshot: null,
+    queue: [],
+    filter: 'ALL',
+    searchQuery: '',
+    selectedFile: null,
+    editingContentId: null,
+  };
+
+  // Khởi động khi tải trang
+  document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    initFilterButtons();
+    initSearchInput();
+    initDropzone();
+    initQuickButtons();
+
+    // Nạp dữ liệu ban đầu
+    loadDashboardSnapshot();
+    loadQueueTable();
+    loadOperationsLogs();
+  });
+
+  /* ================== NAVIGATION ================== */
+  function initNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const tabKey = item.getAttribute('data-tab');
+        if (!tabKey || tabKey === 'research') return; // Placeholder tab
+
+        navItems.forEach((n) => n.classList.remove('active'));
+        item.classList.add('active');
+
+        document.querySelectorAll('.tab-pane').forEach((p) => p.classList.remove('active'));
+        const activePane = document.getElementById(`tab-${tabKey}`);
+        if (activePane) activePane.classList.add('active');
+
+        state.currentTab = tabKey;
+        updatePageTitle(tabKey);
+
+        // Nạp dữ liệu theo từng tab khi chuyển tới
+        if (tabKey === 'overview') loadDashboardSnapshot();
+        if (tabKey === 'queue') loadQueueTable();
+        if (tabKey === 'approval') loadApprovalQueue();
+        if (tabKey === 'upload') populateUploadSelect();
+        if (tabKey === 'calendar') renderCalendarView();
+        if (tabKey === 'control') loadSystemHealth();
+        if (tabKey === 'logs') loadOperationsLogs();
+      });
+    });
+  }
+
+  function updatePageTitle(tabKey) {
+    const titles = {
+      overview: 'Tổng quan hệ thống',
+      queue: 'Hàng đợi Facebook Reels',
+      approval: 'Cổng kiểm duyệt video',
+      upload: 'Upload Studio',
+      calendar: 'Lịch xuất bản 3 slot',
+      control: 'Trạm điều khiển & An toàn',
+      logs: 'Nhật ký kiểm toán vận hành',
+      research: 'Nghiên cứu & Bài viết',
+    };
+    const titleEl = document.getElementById('page-current-title');
+    if (titleEl) titleEl.innerText = titles[tabKey] || 'PTAT Studio';
+  }
+
+  /* ================== TOAST NOTIFICATIONS ================== */
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+
+    let icon = '✅';
+    let borderColor = 'var(--emerald-500)';
+    if (type === 'error') {
+      icon = '❌';
+      borderColor = 'var(--rose-500)';
+    } else if (type === 'warn') {
+      icon = '⚠️';
+      borderColor = 'var(--amber-500)';
+    }
+
+    toast.style.borderColor = borderColor;
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      toast.style.transition = 'all 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
+  }
+
+  /* ================== TAB 1: OVERVIEW ================== */
+  function loadDashboardSnapshot() {
+    google.script.run
+      .withSuccessHandler((snapshot) => {
+        state.snapshot = snapshot;
+        renderOverview(snapshot);
+      })
+      .withFailureHandler((err) => {
+        showToast('Lỗi khi nạp tổng quan: ' + err.message, 'error');
+      })
+      .getDashboardSnapshot();
+  }
+
+  function renderOverview(s) {
+    if (!s) return;
+
+    // Header values
+    document.getElementById('header-slot-text').innerText = `Slot hiện tại: ${s.currentSlot}`;
+    document.getElementById('header-daily-count').innerText = `${s.dailyCount} / ${s.maxDaily}`;
+
+    // KPI stats
+    document.getElementById('stat-published-today').innerText = `${s.dailyCount} / ${s.maxDaily}`;
+    document.getElementById('stat-pending-approval').innerText = s.stats.pendingApproval;
+    document.getElementById('stat-scheduled-today').innerText = s.stats.scheduledToday;
+    document.getElementById('stat-pending-video').innerText = s.stats.pendingVideo;
+
+    // Badges in nav
+    document.getElementById('badge-queue-count').innerText = s.stats.total;
+    document.getElementById('badge-approval-count').innerText = s.stats.pendingApproval;
+
+    // Recovery lock alert
+    const lockAlert = document.getElementById('alert-recovery-lock');
+    if (s.hasRecoveryLock) {
+      lockAlert.style.display = 'flex';
+      const detail = s.recoveryLockDetail;
+      if (detail) {
+        document.getElementById('alert-recovery-desc').innerText = 
+          `Khóa dừng ở Reel ${detail.contentId || ''} lúc ${detail.startedAt || ''}.`;
+      }
+    } else {
+      lockAlert.style.display = 'none';
+    }
+
+    // Actionable Tasks list
+    const tasksContainer = document.getElementById('overview-tasks-list');
+    tasksContainer.innerHTML = '';
+    if (!s.nextTasks || s.nextTasks.length === 0) {
+      tasksContainer.innerHTML = `<div style="color: var(--emerald-400); font-size: 0.9rem;">✨ Mọi thứ đã sẵn sàng, không có việc gấp cần xử lý!</div>`;
+    } else {
+      s.nextTasks.forEach((t) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'background: var(--bg-card); padding: 12px 14px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);';
+        
+        let actionBtn = '';
+        if (t.type === 'NEED_APPROVAL') {
+          actionBtn = `<button class="btn btn-primary btn-sm" onclick="switchToTab('approval')">Duyệt ngay</button>`;
+        } else if (t.type === 'RECOVERY_LOCK') {
+          actionBtn = `<button class="btn btn-danger btn-sm" onclick="showClearLockModal()">Xử lý</button>`;
+        }
+
+        item.innerHTML = `
+          <div style="font-size: 0.88rem;"><strong>${t.contentId}</strong>: ${t.text}</div>
+          ${actionBtn}
+        `;
+        tasksContainer.appendChild(item);
+      });
+    }
+
+    // Today 3 Slots
+    renderTodaySlots();
+  }
+
+  function renderTodaySlots() {
+    google.script.run
+      .withSuccessHandler((rows) => {
+        const today = state.snapshot ? state.snapshot.today : '';
+        const todayRows = rows.filter((r) => r.scheduledDate === today || r.scheduledDate.includes(today));
+
+        const sangRow = todayRows.find((r) => r.slot === 'SÁNG');
+        const truaRow = todayRows.find((r) => r.slot === 'TRƯA');
+        const toiRow = todayRows.find((r) => r.slot === 'TỐI');
+
+        renderSlotBox('sang', sangRow);
+        renderSlotBox('trua', truaRow);
+        renderSlotBox('toi', toiRow);
+      })
+      .listReels('ALL', '');
+  }
+
+  function renderSlotBox(slotKey, row) {
+    const detailEl = document.getElementById(`slot-${slotKey}-detail`);
+    const badgeEl = document.getElementById(`slot-${slotKey}-badge`);
+
+    if (!row) {
+      detailEl.innerText = 'Chưa có bài gán slot này.';
+      badgeEl.innerHTML = '<span class="badge badge-slate">Trống</span>';
+      return;
+    }
+
+    let statusBadge = '<span class="badge badge-amber">Chờ duyệt</span>';
+    if (row.postingStatus === 'ĐÃ ĐĂNG') {
+      statusBadge = '<span class="badge badge-emerald">Đã đăng</span>';
+    } else if (row.approvalStatus === 'ĐÃ DUYỆT') {
+      statusBadge = '<span class="badge badge-blue">Sẵn sàng</span>';
+    } else if (row.postingStatus === 'LỖI') {
+      statusBadge = '<span class="badge badge-rose">Lỗi</span>';
+    }
+
+    detailEl.innerHTML = `<strong>${row.contentId}</strong> — ${escapeHtml(row.idea || row.caption || '')}`;
+    badgeEl.innerHTML = statusBadge;
+  }
+
+  /* ================== TAB 2: REELS QUEUE ================== */
+  function initFilterButtons() {
+    const buttons = document.querySelectorAll('#queue-filter-buttons .filter-btn');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.filter = btn.getAttribute('data-filter');
+        loadQueueTable();
+      });
+    });
+  }
+
+  function initSearchInput() {
+    const searchInput = document.getElementById('queue-search');
+    let timeout = null;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        state.searchQuery = e.target.value;
+        loadQueueTable();
+      }, 300);
+    });
+  }
+
+  function loadQueueTable() {
+    const tbody = document.getElementById('queue-table-body');
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;"><div class="spinner" style="margin: 0 auto 8px auto;"></div>Đang tải dữ liệu...</td></tr>`;
+
+    google.script.run
+      .withSuccessHandler((rows) => {
+        state.queue = rows;
+        renderQueueTable(rows);
+      })
+      .withFailureHandler((err) => {
+        tbody.innerHTML = `<tr><td colspan="7" style="color: var(--rose-500); text-align: center; padding: 20px;">Lỗi: ${err.message}</td></tr>`;
+      })
+      .listReels(state.filter, state.searchQuery);
+  }
+
+  function renderQueueTable(rows) {
+    const tbody = document.getElementById('queue-table-body');
+    tbody.innerHTML = '';
+
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">Không có hàng đợi nào phù hợp bộ lọc.</td></tr>`;
+      return;
+    }
+
+    rows.forEach((r) => {
+      const tr = document.createElement('tr');
+
+      // Video Status Badge
+      let videoBadge = `<span class="badge badge-slate">Chưa có</span>`;
+      if (r.videoStatus === 'VIDEO_READY') {
+        videoBadge = `<span class="badge badge-emerald">Video Ready</span>`;
+      }
+
+      // Approval Gate Badge
+      let approvalBadge = `<span class="badge badge-slate">Chưa</span>`;
+      if (r.approvalStatus === 'CHỜ DUYỆT') {
+        approvalBadge = `<span class="badge badge-amber">Chờ duyệt</span>`;
+      } else if (r.approvalStatus === 'ĐÃ DUYỆT') {
+        approvalBadge = `<span class="badge badge-blue">Đã duyệt</span>`;
+      } else if (r.approvalStatus === 'TỪ CHỐI') {
+        approvalBadge = `<span class="badge badge-rose" title="${escapeHtml(r.rejectionReason || '')}">Từ chối</span>`;
+      }
+
+      // Posting Status Badge
+      let postBadge = `<span class="badge badge-slate">Chưa đăng</span>`;
+      if (r.postingStatus === 'ĐÃ ĐĂNG') {
+        postBadge = `<span class="badge badge-emerald">Đã đăng</span>`;
+      } else if (r.postingStatus === 'LỖI') {
+        postBadge = `<span class="badge badge-rose" title="${escapeHtml(r.lastError || '')}">Lỗi</span>`;
+      }
+
+      // Date & Slot display
+      const dateText = r.scheduledDate ? escapeHtml(r.scheduledDate) : '-';
+      const slotBadge = r.slot ? `<span class="badge badge-slate" style="margin-left: 4px;">${r.slot}</span>` : '';
+
+      tr.innerHTML = `
+        <td><strong>${r.contentId}</strong></td>
+        <td style="max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(r.idea || '')}">
+          ${escapeHtml(r.idea || r.caption || '-')}
+        </td>
+        <td>${dateText} ${slotBadge}</td>
+        <td>${videoBadge}</td>
+        <td>${approvalBadge}</td>
+        <td>${postBadge}</td>
+        <td style="text-align: right; white-space: nowrap;">
+          <button class="btn btn-secondary btn-sm" onclick="openDetailModal('${r.contentId}')">👁️ Sửa / Xem</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  /* ================== TAB 3: APPROVAL CENTER ================== */
+  function loadApprovalQueue() {
+    const container = document.getElementById('approval-cards-container');
+    container.innerHTML = `<div style="color: var(--text-muted); padding: 20px;"><div class="spinner" style="margin-bottom: 8px;"></div>Đang kiểm tra hàng chờ duyệt...</div>`;
+
+    google.script.run
+      .withSuccessHandler((rows) => {
+        renderApprovalCards(rows);
+      })
+      .withFailureHandler((err) => {
+        container.innerHTML = `<div style="color: var(--rose-500); padding: 20px;">Lỗi: ${err.message}</div>`;
+      })
+      .listReels('NEED_APPROVAL', '');
+  }
+
+  function renderApprovalCards(rows) {
+    const container = document.getElementById('approval-cards-container');
+    container.innerHTML = '';
+
+    if (!rows || rows.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border);">
+          <div style="font-size: 36px; margin-bottom: 8px;">🎉</div>
+          <div style="font-weight: 600; font-size: 1.05rem;">Không có video nào đang chờ duyệt!</div>
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Khi bạn upload video mới, video sẽ tự động xuất hiện tại đây để bạn duyệt trước khi đăng.</div>
+        </div>
+      `;
+      return;
+    }
+
+    rows.forEach((r) => {
+      const card = document.createElement('div');
+      card.className = 'panel';
+      card.style.cssText = 'margin-bottom: 0; display: flex; flex-direction: column; gap: 14px;';
+
+      const driveLinkBtn = r.driveUrl
+        ? `<a href="${r.driveUrl}" target="_blank" class="btn btn-secondary btn-sm">▶️ Xem Video Drive</a>`
+        : '';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 1.15rem; font-weight: 800; color: var(--emerald-400);">${r.contentId}</span>
+          <span class="badge badge-amber">Chờ duyệt</span>
+        </div>
+
+        <div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Ý TƯỞNG & HOOK</div>
+          <div style="font-size: 0.92rem; font-weight: 600; margin-top: 2px;">${escapeHtml(r.idea || '')}</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(r.hook || '')}</div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">CAPTION FACEBOOK</div>
+          <div style="font-size: 0.85rem; background: var(--bg-input); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); max-height: 80px; overflow-y: auto; margin-top: 4px;">
+            ${escapeHtml(r.caption || '')}
+          </div>
+        </div>
+
+        <div style="font-size: 0.82rem; color: var(--text-muted);">
+          📅 Ngày: <strong>${r.scheduledDate || 'Chưa đặt'}</strong> • Slot: <strong>${r.slot || 'Chưa đặt'}</strong>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border);">
+          ${driveLinkBtn}
+          <button class="btn btn-primary btn-sm" style="margin-left: auto;" onclick="submitApproveReel('${r.contentId}')">✅ Duyệt Đăng</button>
+          <button class="btn btn-danger btn-sm" onclick="openRejectModal('${r.contentId}')">❌ Từ Chối</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function submitApproveReel(contentId) {
+    if (!confirm(`Bạn chắc chắn muốn duyệt đăng cho ${contentId}?`)) return;
+
+    showToast(`Đang phê duyệt ${contentId}...`, 'info');
+    google.script.run
+      .withSuccessHandler((res) => {
+        showToast(res.message, 'success');
+        loadApprovalQueue();
+        loadDashboardSnapshot();
+      })
+      .withFailureHandler((err) => {
+        showToast('Lỗi duyệt đăng: ' + err.message, 'error');
+      })
+      .approveReel(contentId);
+  }
+
+  function openRejectModal(contentId) {
+    document.getElementById('reject-content-id').value = contentId;
+    document.getElementById('reject-modal-prompt').innerText = `Nhập lý do từ chối cho ${contentId}:`;
+    document.getElementById('reject-reason').value = '';
+    openModal('modal-reject');
+  }
+
+  function submitRejectReel() {
+    const contentId = document.getElementById('reject-content-id').value;
+    const reason = document.getElementById('reject-reason').value;
+
+    if (!reason || reason.trim().length === 0) {
+      alert('Vui lòng nhập lý do từ chối.');
+      return;
+    }
+
+    closeModal('modal-reject');
+    showToast(`Đang ghi nhận từ chối cho ${contentId}...`, 'info');
+
+    google.script.run
+      .withSuccessHandler((res) => {
+        showToast(`Đã từ chối duyệt ${res.contentId}.`, 'warn');
+        loadApprovalQueue();
+        loadDashboardSnapshot();
+      })
+      .withFailureHandler((err) => {
+        showToast('Lỗi: ' + err.message, 'error');
+      })
+      .rejectReel(contentId, reason);
+  }
+
+  /* ================== TAB 4: UPLOAD STUDIO ================== */
+  function populateUploadSelect() {
+    const select = document.getElementById('upload-content-id');
+    select.innerHTML = '<option value="">-- Chọn Content ID --</option>';
+
+    google.script.run
+      .withSuccessHandler((rows) => {
+        // Chỉ hiện những dòng chưa đăng
+        const activeRows = rows.filter((r) => r.postingStatus !== 'ĐÃ ĐĂNG');
+        activeRows.forEach((r) => {
+          const opt = document.createElement('option');
+          opt.value = r.contentId;
+          const statusText = r.videoStatus === 'VIDEO_READY' ? '(Đã có video)' : '(Chưa có video)';
+          opt.innerText = `${r.contentId} — ${r.idea || r.caption || ''} ${statusText}`;
+          select.appendChild(opt);
+        });
+      })
+      .listReels('ALL', '');
+  }
+
+  function initDropzone() {
+    const dropzone = document.getElementById('dropzone');
+
+    ['dragenter', 'dragover'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('drag-over');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('drag-over');
+      });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        validateAndSetFile(files[0]);
+      }
+    });
+  }
+
+  function handleFileSelected(input) {
+    if (input.files && input.files.length > 0) {
+      validateAndSetFile(input.files[0]);
+    }
+  }
+
+  function validateAndSetFile(file) {
+    if (!file.name.toLowerCase().endsWith('.mp4')) {
+      alert('Vui lòng chỉ chọn file định dạng .mp4');
+      return;
+    }
+
+    const sizeMb = file.size / (1024 * 1024);
+    if (sizeMb > 50) {
+      alert(`File video dung lượng ${sizeMb.toFixed(1)} MB vượt quá giới hạn 50 MB!`);
+      return;
+    }
+
+    state.selectedFile = file;
+    document.getElementById('upload-file-name').innerText = `Tên file: ${file.name}`;
+    document.getElementById('upload-file-size').innerText = `Dung lượng: ${sizeMb.toFixed(2)} MB (Hợp lệ)`;
+    document.getElementById('upload-file-details').style.display = 'block';
+    document.getElementById('dropzone-text').innerText = `Đã chọn: ${file.name}`;
+    document.getElementById('btn-upload-submit').removeAttribute('disabled');
+  }
+
+  function handleUploadSubmit(e) {
+    e.preventDefault();
+    const contentId = document.getElementById('upload-content-id').value;
+    if (!contentId) {
+      alert('Vui lòng chọn Content ID.');
+      return;
+    }
+    if (!state.selectedFile) {
+      alert('Vui lòng chọn file video MP4.');
+      return;
+    }
+
+    const submitBtn = document.getElementById('btn-upload-submit');
+    const progressBox = document.getElementById('upload-progress-box');
+    submitBtn.setAttribute('disabled', 'true');
+    progressBox.style.display = 'block';
+
+    const formEl = document.getElementById('upload-form');
+    // Truyền form object trực tiếp lên Apps Script
+    google.script.run
+      .withSuccessHandler((res) => {
+        progressBox.style.display = 'none';
+        submitBtn.removeAttribute('disabled');
+        showToast(`Tải lên thành công ${res.contentId}! Video đã chuyển sang trạng thái CHỜ DUYỆT.`, 'success');
+        formEl.reset();
+        document.getElementById('upload-file-details').style.display = 'none';
+        document.getElementById('dropzone-text').innerText = 'Kéo thả file MP4 vào đây hoặc bấm để chọn';
+        loadDashboardSnapshot();
+      })
+      .withFailureHandler((err) => {
+        progressBox.style.display = 'none';
+        submitBtn.removeAttribute('disabled');
+        showToast('Lỗi upload: ' + err.message, 'error');
+      })
+      .uploadReelVideoFromForm({
+        contentId: contentId,
+        videoFile: state.selectedFile,
+      });
+  }
+
+  /* ================== TAB 5: CALENDAR / SLOTS ================== */
+  function renderCalendarView() {
+    const container = document.getElementById('calendar-days-container');
+    container.innerHTML = `<div style="color: var(--text-muted); padding: 20px;"><div class="spinner" style="margin-bottom: 8px;"></div>Đang nạp lịch phát hành...</div>`;
+
+    google.script.run
+      .withSuccessHandler((rows) => {
+        container.innerHTML = '';
+        // Nhóm theo ngày
+        const daysMap = new Map();
+        rows.forEach((r) => {
+          const dateKey = r.scheduledDate || 'Chưa xếp ngày';
+          if (!daysMap.has(dateKey)) daysMap.set(dateKey, []);
+          daysMap.get(dateKey).push(r);
+        });
+
+        if (daysMap.size === 0) {
+          container.innerHTML = `<div style="color: var(--text-muted); padding: 20px;">Chưa có bài nào được lên lịch.</div>`;
+          return;
+        }
+
+        daysMap.forEach((dayRows, dateKey) => {
+          const dayPanel = document.createElement('div');
+          dayPanel.className = 'panel';
+          dayPanel.style.marginBottom = '0';
+
+          const sang = dayRows.find((r) => r.slot === 'SÁNG');
+          const trua = dayRows.find((r) => r.slot === 'TRƯA');
+          const toi = dayRows.find((r) => r.slot === 'TỐI');
+
+          dayPanel.innerHTML = `
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+              <span>📅</span> <span>Ngày: ${escapeHtml(dateKey)}</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+              ${renderSlotCard('🌅 Sáng (08:00)', sang)}
+              ${renderSlotCard('☀️ Trưa (12:00)', trua)}
+              ${renderSlotCard('🌙 Tối (20:00)', toi)}
+            </div>
+          `;
+          container.appendChild(dayPanel);
+        });
+      })
+      .listReels('ALL', '');
+  }
+
+  function renderSlotCard(slotTitle, row) {
+    if (!row) {
+      return `
+        <div style="background: var(--bg-card); padding: 14px; border-radius: var(--radius-md); border: 1px dashed var(--border); opacity: 0.6;">
+          <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-muted);">${slotTitle}</div>
+          <div style="font-size: 0.82rem; margin-top: 6px;">Trống slot</div>
+        </div>
+      `;
+    }
+
+    let statusColor = 'var(--amber-400)';
+    if (row.postingStatus === 'ĐÃ ĐĂNG') statusColor = 'var(--emerald-400)';
+    else if (row.approvalStatus === 'ĐÃ DUYỆT') statusColor = '#60A5FA';
+
+    return `
+      <div style="background: var(--bg-card); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">${slotTitle}</div>
+          <span style="font-size: 0.75rem; font-weight: 700; color: ${statusColor};">${row.postingStatus === 'ĐÃ ĐĂNG' ? 'ĐÃ ĐĂNG' : row.approvalStatus}</span>
+        </div>
+        <div style="font-weight: 700; font-size: 0.95rem; margin-top: 6px;">${row.contentId}</div>
+        <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+          ${escapeHtml(row.idea || row.caption || '')}
+        </div>
+      </div>
+    `;
+  }
+
+  /* ================== TAB 6: CONTROL CENTER ================== */
+  function loadSystemHealth() {
+    google.script.run
+      .withSuccessHandler((health) => {
+        const detailsContainer = document.getElementById('system-health-details');
+        const tokenBadge = health.metaTokenConfigured
+          ? `<span class="badge badge-emerald">Đã cấu hình trong Script Properties</span>`
+          : `<span class="badge badge-rose">Chưa có Token</span>`;
+
+        const lockBadge = health.recoveryLockActive
+          ? `<span class="badge badge-rose">Đang khóa (Recovery Lock)</span>`
+          : `<span class="badge badge-emerald">Bình thường</span>`;
+
+        detailsContainer.innerHTML = `
+          <div><strong>Token Meta Fanpage:</strong> ${tokenBadge}</div>
+          <div><strong>Trigger Đồng Bộ Drive (15p):</strong> ${health.triggers.driveSyncEnabled ? '✅ Hoạt động' : '❌ Chưa có'}</div>
+          <div><strong>Trigger Đăng Reel (08h, 12h, 20h):</strong> ${health.triggers.publishScheduleEnabled ? `✅ ${health.triggers.publishScheduleCount} Trigger` : '❌ Đang tắt'}</div>
+          <div><strong>Reel Đã Đăng Hôm Nay:</strong> ${health.dailyReelsPublished} / ${health.maxDailyReels}</div>
+        `;
+
+        document.getElementById('control-lock-status').innerHTML = lockBadge;
+      })
+      .getSystemHealth();
+  }
+
+  function triggerManualSync() {
+    const btn = document.getElementById('btn-control-sync');
+    btn.setAttribute('disabled', 'true');
+    btn.innerHTML = `<div class="spinner"></div> Đang quét Drive...`;
+
+    google.script.run
+      .withSuccessHandler((res) => {
+        btn.removeAttribute('disabled');
+        btn.innerHTML = `<span>🔄</span> Quét Drive Ngay`;
+        showToast(res.message, 'success');
+        loadDashboardSnapshot();
+      })
+      .withFailureHandler((err) => {
+        btn.removeAttribute('disabled');
+        btn.innerHTML = `<span>🔄</span> Quét Drive Ngay`;
+        showToast('Lỗi quét Drive: ' + err.message, 'error');
+      })
+      .syncDriveNow();
+  }
+
+  function triggerEmergencyStop() {
+    if (!confirm('BẠN CÓ CHẮC CHẮN MUỐN DỪNG KHẨN CẤP LỊCH ĐĂNG REELS? (Các trigger đăng sẽ bị xóa, trigger Drive vẫn giữ)')) return;
+
+    showToast('Đang dừng lịch đăng...', 'warn');
+    google.script.run
+      .withSuccessHandler((res) => {
+        showToast(`Đã dừng thành công ${res.removedCount} trigger publisher.`, 'warn');
+        loadSystemHealth();
+        loadDashboardSnapshot();
+      })
+      .withFailureHandler((err) => {
+        showToast('Lỗi: ' + err.message, 'error');
+      })
+      .emergencyStopSchedule();
+  }
+
+  function triggerResetSchedule() {
+    if (!confirm('Khôi phục lại 3 trigger đăng hằng ngày (08:00, 12:00, 20:00)?')) return;
+
+    showToast('Đang kích hoạt lại 3 trigger...', 'info');
+    google.script.run
+      .withSuccessHandler((res) => {
+        showToast(res.message, 'success');
+        loadSystemHealth();
+        loadDashboardSnapshot();
+      })
+      .withFailureHandler((err) => {
+        showToast('Lỗi: ' + err.message, 'error');
+      })
+      .resetScheduleNow();
+  }
+
+  function showClearLockModal() {
+    document.getElementById('clear-lock-reason').value = '';
+    openModal('modal-clear-lock');
+  }
+
+  function submitClearLock() {
+    const reason = document.getElementById('clear-lock-reason').value;
+    if (!reason || reason.trim().length === 0) {
+      alert('Vui lòng nhập lý do gỡ khóa sau khi đã kiểm tra Fanpage.');
+      return;
+    }
+
+    closeModal('modal-clear-lock');
+    showToast('Đang gỡ Recovery Lock...', 'info');
+
+    google.script.run
+      .withSuccessHandler((res) => {
+        showToast(res.message, 'success');
+        loadDashboardSnapshot();
+        loadSystemHealth();
+      })
+      .withFailureHandler((err) => {
+        showToast('Lỗi: ' + err.message, 'error');
+      })
+      .clearLockSafe(reason);
+  }
+
+  /* ================== TAB 7: OPERATIONS LOG ================== */
+  function loadOperationsLogs() {
+    const tbody = document.getElementById('logs-table-body');
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;"><div class="spinner" style="margin: 0 auto 8px auto;"></div>Đang tải nhật ký...</td></tr>`;
+
+    google.script.run
+      .withSuccessHandler((logs) => {
+        tbody.innerHTML = '';
+        if (!logs || logs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">Chưa có nhật ký nào.</td></tr>`;
+          return;
+        }
+
+        logs.forEach((log) => {
+          const tr = document.createElement('tr');
+          let resultBadge = `<span class="badge badge-emerald">OK</span>`;
+          if (log.result === 'ERROR') resultBadge = `<span class="badge badge-rose">ERROR</span>`;
+          else if (log.result === 'WARN') resultBadge = `<span class="badge badge-amber">WARN</span>`;
+
+          tr.innerHTML = `
+            <td style="white-space: nowrap; font-size: 0.8rem; color: var(--text-muted);">${log.timestamp}</td>
+            <td><strong>${log.action}</strong></td>
+            <td><code>${log.contentId}</code></td>
+            <td>${resultBadge}</td>
+            <td style="max-width: 320px; font-size: 0.85rem;">${escapeHtml(log.message)}</td>
+            <td style="font-size: 0.82rem; color: var(--text-muted);">${log.actor}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .withFailureHandler((err) => {
+        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--rose-500); padding: 20px;">Lỗi tải log: ${err.message}</td></tr>`;
+      })
+      .getOperationsLog(50);
+  }
+
+  /* ================== MODAL EDIT REEL DRAFT ================== */
+  function openDetailModal(contentId) {
+    state.editingContentId = contentId;
+    document.getElementById('modal-detail-title').innerText = `Chi tiết ${contentId}`;
+
+    google.script.run
+      .withSuccessHandler((r) => {
+        if (!r) return;
+        document.getElementById('modal-idea').value = r.idea || '';
+        document.getElementById('modal-hook').value = r.hook || '';
+        document.getElementById('modal-script').value = r.script || '';
+        document.getElementById('modal-caption').value = r.caption || '';
+        document.getElementById('modal-date').value = r.scheduledDate || '';
+        document.getElementById('modal-slot').value = r.slot || '';
+
+        const driveBox = document.getElementById('modal-drive-link-box');
+        const driveLink = document.getElementById('modal-drive-link');
+        if (r.driveUrl) {
+          driveLink.href = r.driveUrl;
+          driveBox.style.display = 'block';
+        } else {
+          driveBox.style.display = 'none';
+        }
+
+        openModal('modal-detail');
+      })
+      .getReelDetail(contentId);
+  }
+
+  function handleSaveDraft() {
+    const contentId = state.editingContentId;
+    const caption = document.getElementById('modal-caption').value;
+    const date = document.getElementById('modal-date').value;
+    const slot = document.getElementById('modal-slot').value;
+
+    const btn = document.getElementById('btn-save-draft');
+    btn.setAttribute('disabled', 'true');
+    btn.innerText = 'Đang lưu...';
+
+    google.script.run
+      .withSuccessHandler(() => {
+        btn.removeAttribute('disabled');
+        btn.innerText = 'Lưu Bản Nháp';
+        closeModal('modal-detail');
+        showToast(`Đã lưu bản nháp ${contentId}!`, 'success');
+        loadQueueTable();
+      })
+      .withFailureHandler((err) => {
+        btn.removeAttribute('disabled');
+        btn.innerText = 'Lưu Bản Nháp';
+        showToast('Lỗi khi lưu: ' + err.message, 'error');
+      })
+      .saveReelDraft({
+        contentId: contentId,
+        caption: caption,
+        scheduledDate: date,
+        slot: slot,
+      });
+  }
+
+  /* ================== QUICK BUTTONS & HELPERS ================== */
+  function initQuickButtons() {
+    document.getElementById('btn-sync-quick').addEventListener('click', () => {
+      triggerManualSync();
+    });
+  }
+
+  function switchToTab(tabKey) {
+    const navItem = document.querySelector(`.nav-item[data-tab="${tabKey}"]`);
+    if (navItem) navItem.click();
+  }
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.add('open');
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove('open');
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+</script>
+
+</body>
+</html>

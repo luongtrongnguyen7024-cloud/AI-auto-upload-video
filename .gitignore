@@ -1,0 +1,4 @@
+.artifact-build/
+node_modules/
+*.log
+.DS_Store

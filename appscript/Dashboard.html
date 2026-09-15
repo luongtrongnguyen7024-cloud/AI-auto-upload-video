@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>PTAT Studio — Trung Tâm Điều Hành Video & Bài Viết</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <?!= include('Dashboard.css'); ?>
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">🌿</div>
+      <div>
+        <div class="brand-title">PTAT Studio</div>
+        <span class="brand-badge">Auto Publisher v1</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-tab="overview">
+        <span>📊</span>
+        <span>Tổng quan</span>
+      </div>
+      <div class="nav-item" data-tab="queue">
+        <span>🎬</span>
+        <span>Hàng đợi Reels</span>
+        <span class="nav-badge" id="badge-queue-count">0</span>
+      </div>
+      <div class="nav-item" data-tab="approval">
+        <span>✅</span>
+        <span>Cổng Duyệt</span>
+        <span class="nav-badge" id="badge-approval-count" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24;">0</span>
+      </div>
+      <div class="nav-item" data-tab="upload">
+        <span>📤</span>
+        <span>Upload Studio</span>
+      </div>
+      <div class="nav-item" data-tab="calendar">
+        <span>📅</span>
+        <span>Lịch 3 Slot</span>
+      </div>
+      <div class="nav-item" data-tab="control">
+        <span>⚡</span>
+        <span>Trạm Điều Khiển</span>
+      </div>
+      <div class="nav-item" data-tab="logs">
+        <span>📜</span>
+        <span>Nhật ký Vận hành</span>
+      </div>
+      <div class="nav-item" data-tab="research" style="opacity: 0.6;">
+        <span>💡</span>
+        <span>Bài viết & Nguồn</span>
+        <span style="font-size: 0.65rem; background: rgba(255,255,255,0.08); padding: 2px 5px; border-radius: 4px; margin-left: auto;">Sắp tới</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div><strong>Phong Thủy An Tâm</strong></div>
+      <div>Page ID: 1321343767732072</div>
+      <div id="footer-status" style="margin-top: 4px; color: var(--emerald-400);">● Hệ thống an toàn</div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="main-wrapper">
+    <!-- TOP STICKY HEADER -->
+    <header class="top-header">
+      <div class="header-info">
+        <h1 class="page-title" id="page-current-title">Tổng quan hệ thống</h1>
+        <div class="status-pill" id="header-slot-pill">
+          <span class="status-dot active"></span>
+          <span id="header-slot-text">Slot: Đang nạp...</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-pill" id="header-daily-pill" title="Giới hạn tối đa 3 Reel mỗi ngày">
+          <span>Hạn mức ngày:</span>
+          <strong id="header-daily-count" style="color: var(--emerald-400);">0 / 3</strong>
+        </div>
+
+        <button class="btn btn-secondary btn-sm" id="btn-sync-quick" title="Quét thư mục Google Drive ngay lập tức">
+          <span>🔄</span> Quét Drive
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="content-body">
+
+      <!-- TAB 1: OVERVIEW -->
+      <section class="tab-pane active" id="tab-overview">
+        <!-- RECOVERY LOCK ALERT (ẨN NẾU KHÔNG CÓ KHÓA) -->
+        <div class="alert-box danger" id="alert-recovery-lock" style="display: none;">
+          <div class="alert-content">
+            <span class="alert-icon">⚠️</span>
+            <div>
+              <strong>Đang có khóa chống đăng trùng (Recovery Lock) trên hệ thống!</strong>
+              <div id="alert-recovery-desc" style="font-size: 0.85rem; margin-top: 2px;">Vui lòng kiểm tra Fanpage trước khi bấm gỡ khóa.</div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="showClearLockModal()">Gỡ khóa an toàn</button>
+        </div>
+
+        <!-- STATS KPI GRID -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>ĐÃ ĐĂNG HÔM NAY</span>
+              <span>📈</span>
+            </div>
+            <div class="stat-value" id="stat-published-today">0 / 3</div>
+            <div class="stat-desc">Giới hạn Meta an toàn 3 bài/ngày</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>VIDEO CHỜ DUYỆT</span>
+              <span>⏳</span>
+            </div>
+            <div class="stat-value" id="stat-pending-approval" style="color: var(--amber-400);">0</div>
+            <div class="stat-desc">Cần người vận hành phê duyệt</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>ĐÃ LÊN LỊCH HÔM NAY</span>
+              <span>📅</span>
+            </div>
+            <div class="stat-value" id="stat-scheduled-today" style="color: var(--emerald-400);">0</div>
+            <div class="stat-desc">Đủ điều kiện sẵn sàng đăng</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span>CHƯA CÓ VIDEO</span>
+              <span>🎬</span>
+            </div>
+            <div class="stat-value" id="stat-pending-video" style="color: var(--text-secondary);">0</div>
+            <div class="stat-desc">Hàng đợi đang chờ upload</div>
+          </div>
+        </div>
+
+        <!-- TWO COLUMN LAYOUT: NEXT TASKS + TODAY SLOTS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 28px;">
+          <!-- CARD: VIỆC CẦN LÀM TIẾP THEO -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>🎯</span> Việc cần làm tiếp theo
+              </div>
+            </div>
+            <div id="overview-tasks-list" style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="color: var(--text-muted); font-size: 0.9rem;">Đang tải dữ liệu nhiệm vụ...</div>
+            </div>
+          </div>
+
+          <!-- CARD: 3 KHUNG GIỜ HÔM NAY -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>⏰</span> Lịch 3 Slot hôm nay
+              </div>
+              <span class="badge badge-emerald" id="today-date-badge">Hôm nay</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;" id="overview-slots-container">
+              <!-- Sáng -->
+              <div style="background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">🌅 Slot Sáng (08:00)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);" id="slot-sang-detail">Đang kiểm tra...</div>
+                </div>
+                <div id="slot-sang-badge"><span class="badge badge-slate">Trống</span></div>
+              </div>
+
+              <!-- Trưa -->
+              <div style="background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">☀️ Slot Trưa (12:00)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);" id="slot-trua-detail">Đang kiểm tra...</div>
+                </div>
+                <div id="slot-trua-badge"><span class="badge badge-slate">Trống</span></div>
+              </div>
+
+              <!-- Tối -->
+              <div style="background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem;">🌙 Slot Tối (20:00)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);" id="slot-toi-detail">Đang kiểm tra...</div>
+                </div>
+                <div id="slot-toi-badge"><span class="badge badge-slate">Trống</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: REELS QUEUE -->
+      <section class="tab-pane" id="tab-queue">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>🎬</span> Danh sách Hàng đợi Reels
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadQueueTable()">
+              <span>🔄</span> Làm mới
+            </button>
+          </div>
+
+          <!-- FILTER BAR -->
+          <div class="filter-bar">
+            <div class="filter-group" id="queue-filter-buttons">
+              <button class="filter-btn active" data-filter="ALL">Tất cả</button>
+              <button class="filter-btn" data-filter="NEED_APPROVAL">Chờ duyệt</button>
+              <button class="filter-btn" data-filter="APPROVED">Đã duyệt</button>
+              <button class="filter-btn" data-filter="TODAY">Hôm nay</button>
+              <button class="filter-btn" data-filter="NEED_VIDEO">Chờ video</button>
+              <button class="filter-btn" data-filter="PUBLISHED">Đã đăng</button>
+              <button class="filter-btn" data-filter="ERROR">Lỗi</button>
+            </div>
+
+            <input type="text" class="search-input" id="queue-search" placeholder="🔍 Tìm kiếm Content ID, ý tưởng, caption...">
+          </div>
+
+          <!-- DATA TABLE -->
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Content ID</th>
+                  <th>Ý tưởng / Chủ đề</th>
+                  <th>Ngày & Slot</th>
+                  <th>Trạng thái Video</th>
+                  <th>Cổng Duyệt</th>
+                  <th>Trạng thái Đăng</th>
+                  <th style="text-align: right;">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="queue-table-body">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">Đang tải danh sách hàng đợi...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: APPROVAL CENTER -->
+      <section class="tab-pane" id="tab-approval">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                <span>✅</span> Cổng Kiểm Duyệt Người Thật
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Chỉ những video được bạn phê duyệt tại đây mới được phép xuất bản lên Fanpage.
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadApprovalQueue()">
+              <span>🔄</span> Quét lại
+            </button>
+          </div>
+
+          <div id="approval-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;">
+            <div style="color: var(--text-muted); padding: 30px;">Đang tìm các video đang chờ duyệt...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: UPLOAD STUDIO -->
+      <section class="tab-pane" id="tab-upload">
+        <div class="panel" style="max-width: 700px; margin: 0 auto;">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                <span>📤</span> Upload Video Studio
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Tải video MP4 dọc (< 50 MB). Hệ thống tự chuẩn hóa tên PTAT-xxx.mp4 và lưu vào Drive intake.
+              </div>
+            </div>
+          </div>
+
+          <form id="upload-form" onsubmit="handleUploadSubmit(event)" style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="form-group">
+              <label class="form-label" for="upload-content-id">Chọn Content ID cần tải video *</label>
+              <select class="form-control" id="upload-content-id" required>
+                <option value="">-- Chọn Content ID --</option>
+              </select>
+            </div>
+
+            <!-- DROPZONE -->
+            <div class="upload-box" id="dropzone" onclick="document.getElementById('video-file-input').click()">
+              <input type="file" id="video-file-input" accept="video/mp4" style="display: none;" onchange="handleFileSelected(this)">
+              <div class="upload-icon">📹</div>
+              <div style="font-weight: 600; font-size: 1rem;" id="dropzone-text">Kéo thả file MP4 vào đây hoặc bấm để chọn</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">Định dạng: MP4 (9:16) • Dung lượng tối đa: 50 MB</div>
+            </div>
+
+            <div id="upload-file-details" style="display: none; background: var(--bg-card); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+              <div style="font-size: 0.9rem; font-weight: 600;" id="upload-file-name">Tên file</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);" id="upload-file-size">Dung lượng: 0 MB</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-upload-submit" disabled>
+              <span>🚀</span> Tải lên Drive & Cập nhật Hàng đợi
+            </button>
+
+            <!-- PROGRESS INDICATOR -->
+            <div id="upload-progress-box" style="display: none; text-align: center; padding: 14px;">
+              <div class="spinner" style="margin: 0 auto 8px auto; width: 24px; height: 24px; border-width: 3px;"></div>
+              <div style="font-size: 0.88rem; color: var(--emerald-400);" id="upload-progress-text">Đang tải video lên Google Drive...</div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 5: CALENDAR / SLOTS -->
+      <section class="tab-pane" id="tab-calendar">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📅</span> Lịch Đăng 3 Slot Hằng Ngày
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Trigger: 08:00 (Sáng) • 12:00 (Trưa) • 20:00 (Tối) (±15 phút theo Google Apps Script)
+            </div>
+          </div>
+
+          <div id="calendar-days-container" style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="color: var(--text-muted); padding: 30px;">Đang tải lịch phát hành...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: CONTROL CENTER -->
+      <section class="tab-pane" id="tab-control">
+        <div class="stats-grid">
+          <!-- CARD 1: SYNC DRIVE -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title"><span>🔄</span> Quét Thư Mục Drive</div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Tự động kiểm tra folder intake `PTAT-xxx.mp4` và đồng bộ vào Sheet. Không gọi Meta, an toàn tuyệt đối.
+            </p>
+            <button class="btn btn-primary btn-sm" id="btn-control-sync" onclick="triggerManualSync()">
+              <span>🔄</span> Quét Drive Ngay
+            </button>
+          </div>
+
+          <!-- CARD 2: RECOVERY LOCK -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title"><span>🛡️</span> Khóa Chống Trùng (Recovery Lock)</div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 12px;">
+              Khóa này tự động giữ nếu quá trình publish bị gián đoạn, ngăn ngừa nguy cơ đăng lặp video.
+            </p>
+            <div id="control-lock-status" style="margin-bottom: 16px;">
+              <span class="badge badge-emerald">Bình thường (Không có khóa)</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="showClearLockModal()">
+              <span>🔓</span> Gỡ Khóa Có Kiểm Soát
+            </button>
+          </div>
+
+          <!-- CARD 3: TRIGGER EMERGENCY -->
+          <div class="panel" style="margin-bottom: 0;">
+            <div class="panel-header">
+              <div class="panel-title"><span>⚠️</span> Dừng Khẩn Cấp Lịch Đăng</div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Tạm thời xóa 3 trigger đăng Reels hằng ngày (08h, 12h, 20h). Giữ nguyên trigger quét Drive.
+            </p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-danger btn-sm" onclick="triggerEmergencyStop()">
+                <span>🛑</span> Dừng Lịch Đăng
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="triggerResetSchedule()">
+                <span>⚡</span> Khôi Phục 3 Trigger
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM HEALTH DETAILS -->
+        <div class="panel" style="margin-top: 24px;">
+          <div class="panel-header">
+            <div class="panel-title"><span>🩺</span> Tình Trạng Kết Nối Hệ Thống</div>
+          </div>
+          <div id="system-health-details" style="font-size: 0.9rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <div>Đang kiểm tra kết nối Script Properties...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: OPERATIONS LOG -->
+      <section class="tab-pane" id="tab-logs">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📜</span> Nhật Ký Vận Hành (Operations Log)
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadOperationsLogs()">
+              <span>🔄</span> Tải lại Log
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th>Thao tác</th>
+                  <th>Content ID</th>
+                  <th>Kết quả</th>
+                  <th>Diễn giải</th>
+                  <th>Thực hiện bởi</th>
+                </tr>
+              </thead>
+              <tbody id="logs-table-body">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">Đang tải nhật ký...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: RESEARCH & POSTS (PHASE 4 PLACEHOLDER) -->
+      <section class="tab-pane" id="tab-research">
+        <div class="panel" style="text-align: center; padding: 60px 20px; max-width: 600px; margin: 40px auto;">
+          <div style="font-size: 48px; margin-bottom: 16px;">💡</div>
+          <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 10px;">Giai Đoạn Bài Viết & Nghiên Cứu Phong Thủy</h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+            Tab này được chuẩn bị sẵn cho <strong>Phase 4 & Phase 5</strong> theo kế hoạch bàn giao:
+            Quản lý nguồn nghiên cứu (Research Inbox) và hàng chờ duyệt bài viết (Post Queue) trước khi xuất bản lên Fanpage.
+          </p>
+          <span class="badge badge-slate" style="padding: 6px 12px; font-size: 0.85rem;">Trạng thái: Chưa kích hoạt (An toàn cho Reels v1)</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: CHI TIẾT & SỬA BẢN NHÁP REEL -->
+  <div class="modal-overlay" id="modal-detail">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; font-weight: 700;" id="modal-detail-title">Chi tiết Reel</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Ý tưởng / Chủ đề</label>
+          <input type="text" class="form-control" id="modal-idea" readonly style="opacity: 0.8;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Hook mở đầu</label>
+          <input type="text" class="form-control" id="modal-hook" readonly style="opacity: 0.8;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Kịch bản chi tiết</label>
+          <textarea class="form-control" id="modal-script" readonly style="opacity: 0.8; height: 90px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Caption Facebook (Có thể chỉnh sửa tại đây) *</label>
+          <textarea class="form-control" id="modal-caption" style="height: 110px;"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Ngày đăng (yyyy-MM-dd hoặc dd/MM/yyyy)</label>
+            <input type="text" class="form-control" id="modal-date" placeholder="2026-09-15">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Slot đăng</label>
+            <select class="form-control" id="modal-slot">
+              <option value="">-- Chưa chọn --</option>
+              <option value="SÁNG">SÁNG (08:00)</option>
+              <option value="TRƯA">TRƯA (12:00)</option>
+              <option value="TỐI">TỐI (20:00)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="modal-drive-link-box" style="display: none; font-size: 0.85rem; padding: 10px; background: var(--bg-card); border-radius: var(--radius-sm);">
+          <span>🔗 Link Video Drive: </span>
+          <a href="#" target="_blank" id="modal-drive-link" style="color: var(--emerald-400);">Mở video trên Google Drive</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-detail')">Đóng</button>
+        <button class="btn btn-primary" id="btn-save-draft" onclick="handleSaveDraft()">Lưu Bản Nháp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TỪ CHỐI DUYỆT (BẮT BUỘC LÝ DO) -->
+  <div class="modal-overlay" id="modal-reject">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--rose-500);">Từ Chối Video</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-reject')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary);" id="reject-modal-prompt">
+          Nhập lý do từ chối để người tạo video nắm được và lưu vào nhật ký kiểm toán.
+        </p>
+        <input type="hidden" id="reject-content-id">
+        <div class="form-group">
+          <label class="form-label">Lý do từ chối *</label>
+          <textarea class="form-control" id="reject-reason" placeholder="Ví dụ: Video mờ, âm thanh nhỏ, sai định dạng..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-reject')">Hủy</button>
+        <button class="btn btn-danger" onclick="submitRejectReel()">Xác nhận Từ Chối</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GỠ RECOVERY LOCK AN TOÀN -->
+  <div class="modal-overlay" id="modal-clear-lock">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 700;">Gỡ Khóa Phục Hồi (Recovery Lock)</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-clear-lock')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--amber-400); border: 1px solid rgba(245, 158, 11, 0.3);">
+          ⚠️ <strong>LƯU Ý BẢO MẬT BẮT BUỘC:</strong><br>
+          Trước khi gỡ khóa, bạn phải mở Fanpage và chắc chắn rằng video chưa xuất hiện trên Fanpage để tránh đăng trùng lặp.
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label class="form-label">Lý do gỡ khóa (Ghi vào Audit Log) *</label>
+          <input type="text" class="form-control" id="clear-lock-reason" placeholder="Đã kiểm tra Fanpage, không có video PTAT-xxx..." required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-clear-lock')">Hủy</button>
+        <button class="btn btn-primary" onclick="submitClearLock()">Xác nhận Gỡ Khóa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <?!= include('Dashboard.js'); ?>
+</body>
+</html>
